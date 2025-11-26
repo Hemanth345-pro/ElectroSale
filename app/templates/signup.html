@@ -1,0 +1,80 @@
+
+
+{% extends "auth_index.html" %}
+{% load static %}
+
+{% block content %}
+<div style="text-align: center; margin-bottom: 2rem;">
+    <h1 style="color:#1a1a2e; font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem;">Create Account</h1>
+    <p style="color:#6b7280; font-size: 0.95rem;">Join ElectroSale and discover premium electronics</p>
+</div>
+
+<form id="formAuthentication" class="mb-3" method="POST">
+    {% csrf_token %}
+    
+    <div style="margin-bottom: 1.25rem;">
+        <label for="username" style="color:#374151; font-weight: 500; display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">Username</label>
+        <input type="text" class="form-control" id="username" name="username" placeholder="Choose a username" autofocus 
+               style="width: 100%; padding: 0.75rem 1rem; border-radius: 8px; border: 1.5px solid #e5e7eb; font-size: 0.95rem; transition: all 0.3s;" 
+               onfocus="this.style.borderColor='#3b82f6'; this.style.boxShadow='0 0 0 3px rgba(59,130,246,0.1)'" 
+               onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'" />
+    </div>
+    
+    <div style="margin-bottom: 1.25rem;">
+        <label for="email" style="color:#374151; font-weight: 500; display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">Email Address</label>
+        <input type="email" class="form-control" id="email" name="email" placeholder="your.email@example.com" 
+               style="width: 100%; padding: 0.75rem 1rem; border-radius: 8px; border: 1.5px solid #e5e7eb; font-size: 0.95rem; transition: all 0.3s;" 
+               onfocus="this.style.borderColor='#3b82f6'; this.style.boxShadow='0 0 0 3px rgba(59,130,246,0.1)'" 
+               onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'" />
+    </div>
+    
+    <div style="margin-bottom: 1.25rem;">
+        <label style="color:#374151; font-weight: 500; display: block; margin-bottom: 0.5rem; font-size: 0.9rem;" for="password">Password</label>
+        <div class="input-group input-group-merge" style="position: relative;">
+            <input type="password" id="password" class="form-control" name="password"
+                   placeholder="Create a strong password"
+                   style="width: 100%; padding: 0.75rem 1rem; border-radius: 8px; border: 1.5px solid #e5e7eb; font-size: 0.95rem; transition: all 0.3s;" 
+                   onfocus="this.style.borderColor='#3b82f6'; this.style.boxShadow='0 0 0 3px rgba(59,130,246,0.1)'" 
+                   onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'" />
+            <span class="input-group-text cursor-pointer" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #6b7280;">
+                <i class="bx bx-hide"></i>
+            </span>
+        </div>
+    </div>
+
+    <div style="margin-bottom: 1.5rem;">
+        <div class="form-check" style="display: flex; align-items: flex-start; gap: 0.5rem;">
+            <input class="form-check-input" type="checkbox" id="terms-conditions" required name="terms" 
+                   style="margin-top: 0.25rem; width: 18px; height: 18px; border: 2px solid #d1d5db; border-radius: 4px;" />
+            <label style="color:#6b7280; font-size: 0.85rem; line-height: 1.4;" class="form-check-label" for="terms-conditions">
+                I agree to the <a style="color:#3b82f6; text-decoration: none; font-weight: 500;" href="javascript:void(0);">Terms of Service</a> and <a style="color:#3b82f6; text-decoration: none; font-weight: 500;" href="javascript:void(0);">Privacy Policy</a>
+            </label>
+        </div>
+    </div>
+    
+    <button class="btn d-grid w-100" type="submit"
+            style="width: 100%; padding: 0.875rem; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; border: none; border-radius: 8px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);"
+            onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(59, 130, 246, 0.4)'"
+            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(59, 130, 246, 0.3)'">
+        Create Account
+    </button>
+</form>
+
+<p class="text-center" style="margin-top: 1.5rem; color:#6b7280; font-size: 0.9rem;">
+    Already have an account?
+    <a href="{% url 'login_page' %}" style="color:#3b82f6; text-decoration: none; font-weight: 600; margin-left: 0.25rem;">
+        Sign In
+    </a>
+</p>
+
+<p class="text-center">
+    <h1 style="display: none;">{{form.errors.items}}</h1>
+    {% for ele, error_item in form.errors.items %}
+    <span style="color: #ef4444; font-size: 0.85rem; display: block; margin-top: 0.5rem; padding: 0.5rem; background: #fef2f2; border-radius: 6px;">{{error_item}}</span>
+    {% endfor %}
+</p>
+{% endblock %}
+
+{% block login_register %}
+<span class="app-brand-text demo text-body fw-bolder">Sign Up</span>
+{% endblock %}

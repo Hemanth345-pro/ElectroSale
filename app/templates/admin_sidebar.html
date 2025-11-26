@@ -1,0 +1,270 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+
+    <link rel="stylesheet" href="{% static 'css/animations.css' %}">  
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">  
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+    <link href='https://cdn.jsdelivr.net/npm/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            display: flex;
+            height: 100vh;
+            background: #f8fafc;
+            overflow: hidden;
+        }
+
+        /* Modern Sidebar */
+        .menu {
+            width: 280px;
+            background: #1e293b;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 24px rgba(0, 0, 0, 0.12);
+            position: relative;
+            z-index: 100;
+        }
+
+        .menu-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Brand Header */
+        .menu-brand {
+            padding: 2rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        }
+
+        .menu-brand a {
+            text-decoration: none;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .menu-brand-subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+            font-weight: 500;
+        }
+
+        /* Menu Items */
+        .menu-row {
+            list-style: none;
+        }
+
+        .menu-btn {
+            padding: 0;
+            margin: 0.25rem 0.75rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .menu-btn a {
+            color: #94a3b8;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 0.875rem 1rem;
+            gap: 0.875rem;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .menu-btn i {
+            font-size: 1.25rem;
+            transition: transform 0.3s ease;
+        }
+
+        .menu-btn:hover {
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .menu-btn:hover a {
+            color: #3b82f6;
+        }
+
+        .menu-btn:hover i {
+            transform: scale(1.1);
+        }
+
+        .menu-active {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        }
+
+        .menu-active a {
+            color: white !important;
+        }
+
+        /* Logout Button */
+        .logout-section {
+            margin-top: auto;
+            padding: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logout-btn {
+            width: 100%;
+            padding: 0.875rem;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1.5px solid rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .logout-btn:hover {
+            background: #ef4444;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+        }
+
+        /* Content Area */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            background: #f8fafc;
+        }
+
+        /* Scrollbar Styling */
+        .content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .content::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        .content::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        .content::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .menu {
+                width: 240px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="menu">
+        <div class="menu-container">
+            <!-- Brand -->
+            <div class="menu-brand">
+                <a href="{% url 'admin_home' %}">
+                    ⚡ ElectroSale
+                </a>
+                <div class="menu-brand-subtitle">Admin Dashboard</div>
+            </div>
+
+            <!-- Navigation -->
+            <div style="flex: 1; overflow-y: auto; padding-top: 1rem;">
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                    <li class="menu-row">
+                        <div class="menu-btn {% if request.path == '/admin_home' %} menu-active {% endif %}">
+                            <a href="{% url 'admin_home' %}">
+                                <i class='bx bxs-dashboard'></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </div>
+                    </li>
+                    <li class="menu-row">
+                        <div class="menu-btn {% if request.path == '/admin_products' %} menu-active {% endif %}">
+                            <a href="{% url 'admin_products' %}">
+                                <i class='bx bxs-package'></i>
+                                <span>Products</span>
+                            </a>
+                        </div>
+                    </li>
+                    <li class="menu-row">
+                        <div class="menu-btn {% if request.path == '/admin_inventory' %} menu-active {% endif %}">
+                            <a href="{% url 'admin_inventory' %}">
+                                <i class='bx bxs-box'></i>
+                                <span>Inventory</span>
+                            </a>
+                        </div>
+                    </li>
+                    <li class="menu-row">
+                        <div class="menu-btn {% if request.path == '/admin_sales' %} menu-active {% endif %}">
+                            <a href="{% url 'admin_sales' %}">
+                                <i class='bx bxs-shopping-bag'></i>
+                                <span>New Sale</span>
+                            </a>
+                        </div>
+                    </li>
+                    <li class="menu-row">
+                        <div class="menu-btn {% if request.path == '/admin_sales_history' %} menu-active {% endif %}">
+                            <a href="{% url 'admin_sales_history' %}">
+                                <i class='bx bxs-receipt'></i>
+                                <span>Sales History</span>
+                            </a>
+                        </div>
+                    </li>
+                    <li class="menu-row">
+                        <div class="menu-btn {% if request.path == '/admin_analysis' %} menu-active {% endif %}">
+                            <a href="{% url 'admin_analysis' %}">
+                                <i class='bx bxs-bar-chart-alt-2'></i>
+                                <span>Analytics</span>
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Logout -->
+            <div class="logout-section">
+                <a href="{% url 'logout' %}" style="text-decoration: none;">
+                    <button class="logout-btn">
+                        <i class='bx bx-log-out' style="margin-right: 0.5rem;"></i>
+                        Log Out
+                    </button>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,69 @@
+
+
+{% extends "auth_index.html" %}
+{% load static %}
+
+{% block content %}
+<div style="text-align: center; margin-bottom: 2rem;">
+    <h1 style="color:#1a1a2e; font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem;">Welcome Back</h1>
+    <p style="color:#6b7280; font-size: 0.95rem;">Sign in to continue to ElectroSale</p>
+</div>
+
+<form id="formAuthentication" class="mb-3" method="POST">
+    {% csrf_token %}
+    
+    <div style="margin-bottom: 1.25rem;">
+        <label for="email" style="color:#374151; font-weight: 500; display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">Email or Username</label>
+        <input type="text" class="form-control" id="email" name="email-username" placeholder="Enter your email or username" autofocus required
+               style="width: 100%; padding: 0.75rem 1rem; border-radius: 8px; border: 1.5px solid #e5e7eb; font-size: 0.95rem; transition: all 0.3s;" 
+               onfocus="this.style.borderColor='#3b82f6'; this.style.boxShadow='0 0 0 3px rgba(59,130,246,0.1)'" 
+               onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'" />
+    </div>
+    
+    <div style="margin-bottom: 1.25rem;">
+        <div class="d-flex justify-content-between" style="margin-bottom: 0.5rem;">
+            <label style="color:#374151; font-weight: 500; font-size: 0.9rem;" class="form-label" for="password">Password</label>
+            <a href="#" style="color:#3b82f6; text-decoration: none; font-size: 0.85rem; font-weight: 500;">
+                Forgot Password?
+            </a>
+        </div>
+        <div class="input-group input-group-merge" style="position: relative;">
+            <input type="password" id="password" class="form-control" name="password" placeholder="Enter your password" required
+                   style="width: 100%; padding: 0.75rem 1rem; border-radius: 8px; border: 1.5px solid #e5e7eb; font-size: 0.95rem; transition: all 0.3s;" 
+                   onfocus="this.style.borderColor='#3b82f6'; this.style.boxShadow='0 0 0 3px rgba(59,130,246,0.1)'" 
+                   onblur="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'" />
+            <span class="input-group-text cursor-pointer" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #6b7280;">
+                <i class="bx bx-hide"></i>
+            </span>
+        </div>
+    </div>
+    
+    <div style="margin-bottom: 1.5rem;">
+        <button class="btn d-grid w-100" type="submit"
+                style="width: 100%; padding: 0.875rem; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; border: none; border-radius: 8px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);"
+                onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(59, 130, 246, 0.4)'"
+                onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(59, 130, 246, 0.3)'">
+            Sign In
+        </button>
+    </div>
+</form>
+
+<p class="text-center" style="margin-top: 1.5rem; color:#6b7280; font-size: 0.9rem;">
+    New to ElectroSale?
+    <a href="{% url 'signup_page' %}" style="color:#3b82f6; text-decoration: none; font-weight: 600; margin-left: 0.25rem;">
+        Create an Account
+    </a>
+</p>
+
+<p class="text-center">
+    {% if error %}
+    <span style="color: #ef4444; font-size: 0.85rem; display: block; margin-top: 1rem; padding: 0.75rem; background: #fef2f2; border-radius: 6px; border-left: 3px solid #ef4444;">
+        {{error}}
+    </span>
+    {% endif %}
+</p>
+{% endblock %}
+
+{% block login_register %}
+<span class="app-brand-text demo text-body fw-bolder">Sign In</span>
+{% endblock %}

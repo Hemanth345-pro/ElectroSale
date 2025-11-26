@@ -1,0 +1,157 @@
+
+{% extends 'admin_sidebar.html' %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Analytics</title>
+    <style>
+        .dashboard-container {
+            padding: 2.5rem;
+            background: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .page-header h1 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            color: #64748b;
+        }
+
+        .filter-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .filter-form {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filter-group label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .filter-group input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 0.9375rem;
+            transition: all 0.3s;
+        }
+
+        .filter-group input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+        }
+
+        .btn-filter {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-filter:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+        }
+
+        .chart-container h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="page-header">
+            <h1>Sales Analytics</h1>
+            <p>Visual insights into your sales performance</p>
+        </div>
+        
+        <div class="filter-card">
+            <form method="post" class="filter-form" action="{% url 'admin_analysis' %}">
+                {% csrf_token %}
+                <div class="filter-group">
+                    <label for="start_date">Start Date</label>
+                    <input type="date" name="start_date" id="start_date" value="{{ request.GET.start_date }}">
+                </div>
+
+                <div class="filter-group">
+                    <label for="end_date">End Date</label>
+                    <input type="date" name="end_date" id="end_date" value="{{ request.GET.end_date }}">
+                </div>
+
+                <button type="submit" class="btn-filter">
+                    <i class='bx bx-bar-chart' style="margin-right: 0.5rem;"></i>
+                    Generate Report
+                </button>
+            </form>
+        </div>
+
+        <div class="chart-container">
+            <h2>
+                <i class='bx bxs-pie-chart-alt-2' style="margin-right: 0.5rem; color: #3b82f6;"></i>
+                Sales Distribution by Product
+            </h2>
+            <div style="max-height: 600px; overflow: auto;">
+                {{ sales_bar|safe }}
+            </div>
+        </div>
+        
+        <div class="chart-container">
+            <h2>
+                <i class='bx bxs-pie-chart-alt-2' style="margin-right: 0.5rem; color: #3b82f6;"></i>
+                Inventory by Product
+            </h2>
+            <div style="max-height: 600px; overflow: auto;">
+                {{ inventory_bar|safe }}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+{% endblock %}

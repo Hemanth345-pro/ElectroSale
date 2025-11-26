@@ -1,0 +1,116 @@
+
+{% extends 'admin_sidebar.html' %}
+{% load static %}
+{% block content %}
+<div style="padding: 2.5rem; background: #f8fafc; min-height: 100vh;">
+    <div style="max-width: 700px; margin: 0 auto;">
+        <div style="margin-bottom: 2rem;">
+            <h1 style="font-size: 1.875rem; font-weight: 700; color: #1e293b; margin-bottom: 0.5rem;">Add Inventory Stock</h1>
+            <p style="color: #64748b;">Update stock levels for product variants</p>
+        </div>
+
+        <div style="background: white; border-radius: 16px; padding: 2.5rem; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); border: 1px solid #e2e8f0;">
+            <form method="POST">
+                {% csrf_token %}
+
+                <div style="margin-bottom: 1.75rem;">
+                    <label for="product" style="display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem; font-size: 0.9375rem;">
+                        Product
+                    </label>
+                    <input type="text" name="product" id="product" value="{{ product.name }}" readonly
+                           style="width: 100%; padding: 0.875rem 1rem; border: 1.5px solid #e2e8f0; border-radius: 10px; font-size: 0.9375rem; background: #f8fafc; color: #64748b; cursor: not-allowed;" />
+                </div>
+
+                <div style="margin-bottom: 1.75rem;">
+                    <label for="description" style="display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem; font-size: 0.9375rem;">
+                        Description
+                    </label>
+                    <textarea name="description" id="description" readonly rows="3"
+                              style="width: 100%; padding: 0.875rem 1rem; border: 1.5px solid #e2e8f0; border-radius: 10px; font-size: 0.9375rem; background: #f8fafc; color: #64748b; resize: none; cursor: not-allowed; font-family: inherit;">{{ product.description }}</textarea>
+                </div>
+
+                <div style="margin-bottom: 1.75rem;">
+                    <label for="size" style="display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem; font-size: 0.9375rem;">
+                        Select Brand <span style="color: #ef4444;">*</span>
+                    </label>
+                    <select name="size" id="size" required
+                            style="width: 100%; padding: 0.875rem 1rem; border: 1.5px solid #e2e8f0; border-radius: 10px; font-size: 0.9375rem; transition: all 0.3s; background: white;"
+                            onfocus="this.style.borderColor='#3b82f6'; this.style.boxShadow='0 0 0 3px rgba(59,130,246,0.1)'"
+                            onblur="this.style.borderColor='#e2e8f0'; this.style.boxShadow='none'">
+                        <option value="">-- Select Brand --</option>
+                        {% for size in sizes %}
+                            <option value="{{ size.size }}">{{ size }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div id="stock-info" style="padding: 1rem; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; margin-bottom: 1.75rem; display: none;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <i class='bx bx-info-circle' style="color: #3b82f6; font-size: 1.25rem;"></i>
+                        <span id="stock-text" style="color: #1e40af; font-weight: 600; font-size: 0.9375rem;"></span>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 2rem;">
+                    <label for="quantity" style="display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem; font-size: 0.9375rem;">
+                        Quantity to Add <span style="color: #ef4444;">*</span>
+                    </label>
+                    <input type="number" name="quantity" id="quantity" min="1" required
+                           placeholder="Enter quantity"
+                           style="width: 100%; padding: 0.875rem 1rem; border: 1.5px solid #e2e8f0; border-radius: 10px; font-size: 0.9375rem; transition: all 0.3s;"
+                           onfocus="this.style.borderColor='#3b82f6'; this.style.boxShadow='0 0 0 3px rgba(59,130,246,0.1)'"
+                           onblur="this.style.borderColor='#e2e8f0'; this.style.boxShadow='none'" />
+                </div>
+                
+                <input type="hidden" name="product_id" value="{{ product.id }}">
+
+                <div style="display: flex; gap: 1rem;">
+                    <button type="submit"
+                            style="flex: 1; padding: 1rem; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; border-radius: 10px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);"
+                            onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(16, 185, 129, 0.4)'"
+                            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(16, 185, 129, 0.3)'">
+                        <i class='bx bx-plus-circle' style="margin-right: 0.5rem; font-size: 1.25rem;"></i>
+                        Add Stock
+                    </button>
+                    
+                    <a href="{% url 'admin_inventory' %}" style="text-decoration: none;">
+                        <button type="button"
+                                style="padding: 1rem 2rem; background: white; color: #64748b; border: 1.5px solid #e2e8f0; border-radius: 10px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: all 0.3s;"
+                                onmouseover="this.style.background='#f8fafc'; this.style.borderColor='#cbd5e1'"
+                                onmouseout="this.style.background='white'; this.style.borderColor='#e2e8f0'">
+                            Cancel
+                        </button>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const sizeSelect = document.getElementById('size');
+    const stockInfo = document.getElementById('stock-info');
+    const stockText = document.getElementById('stock-text');
+    const productId = "{{ product.id }}";
+
+    sizeSelect.addEventListener('change', function () {
+        const size = this.value;
+
+        if (size) {
+            fetch(`/get-stock/${productId}/${size}/`)
+                .then(response => response.json())
+                .then(data => {
+                    stockText.textContent = `Current Stock: ${data.stock} units`;
+                    stockInfo.style.display = 'block';
+                })
+                .catch(() => {
+                    stockInfo.style.display = 'none';
+                });
+        } else {
+            stockInfo.style.display = 'none';
+        }
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,177 @@
+
+
+{% extends 'admin_sidebar.html' %}
+{% load static %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <title>Inventory Management</title>
+    <style>
+        .dashboard-container {
+            padding: 2.5rem;
+            background: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .page-header h1 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            color: #64748b;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+            margin-top: 2rem;
+        }
+
+        .table-wrapper {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .table-class {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table-class thead {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+        }
+
+        .table-class th {
+            padding: 1rem 1.25rem;
+            text-align: left;
+            color: white;
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .table-class td {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid #e2e8f0;
+            color: #475569;
+            font-size: 0.9375rem;
+        }
+
+        .table-class tbody tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .product-img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .icon-btn {
+            padding: 0.5rem 0.75rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        .icon-btn.add {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+
+        .icon-btn.view {
+            background: #eff6ff;
+            color: #3b82f6;
+        }
+
+        .icon-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="page-header">
+            <h1>Inventory Management</h1>
+            <p>Manage stock levels for your electronics</p>
+        </div>
+
+        <div class="table-container">
+            <div class="table-wrapper">
+                <table class="table-class">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Image</th>
+                            <th>Product Name</th>
+                            <th>Description</th>
+                            <th style="text-align: center;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in products %}
+                        <tr>
+                            <td style="font-weight: 600; color: #1e293b;">#{{ product.id }}</td>
+                            <td>
+                                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-img" />
+                            </td>
+                            <td style="font-weight: 600; color: #1e293b;">{{ product.name }}</td>
+                            <td style="max-width: 350px;">{{ product.description|truncatewords:12 }}</td>
+                            <td>
+                                <div class="action-buttons" style="justify-content: center;">
+                                    <a href="{% url 'admin_add_inventory' product.id %}" class="icon-btn add">
+                                        <i class="fa-solid fa-plus"></i>
+                                        Add Stock
+                                    </a>
+                                    <a href="{% url 'admin_view_inventory' product.id %}" class="icon-btn view">
+                                        <i class="fa-solid fa-eye"></i>
+                                        View
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" style="text-align: center; padding: 3rem; color: #94a3b8;">
+                                <i class='bx bx-box' style="font-size: 3rem; opacity: 0.5; margin-bottom: 1rem; display: block;"></i>
+                                <p style="font-weight: 600; margin-bottom: 0.5rem;">No products available</p>
+                                <p style="font-size: 0.875rem;">Add products first to manage inventory</p>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+{% endblock %}

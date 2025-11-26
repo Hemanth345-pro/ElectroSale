@@ -1,0 +1,111 @@
+
+
+
+{% extends 'admin_sidebar.html' %}
+{% load static %}
+
+{% block content %}
+<div style="padding: 2.5rem; background: #f8fafc; min-height: 100vh;">
+    <div style="max-width: 700px; margin: 0 auto;">
+        <div style="margin-bottom: 2rem;">
+            {% if product %}
+            <h1 style="font-size: 1.875rem; font-weight: 700; color: #1e293b; margin-bottom: 0.5rem;">Edit Product</h1>
+            <p style="color: #64748b;">Update product information</p>
+            {% else %}
+            <h1 style="font-size: 1.875rem; font-weight: 700; color: #1e293b; margin-bottom: 0.5rem;">Add New Product</h1>
+            <p style="color: #64748b;">Add a new electronic device to your catalog</p>
+            {% endif %}
+        </div>
+
+        <div style="background: white; border-radius: 16px; padding: 2.5rem; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); border: 1px solid #e2e8f0;">
+            <form method="POST" action="{% url 'admin_add_product' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <div style="margin-bottom: 1.75rem;">
+                    <label for="product_name" style="display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem; font-size: 0.9375rem;">
+                        Product Name <span style="color: #ef4444;">*</span>
+                    </label>
+                    <input type="text" name="product_name" id="product_name" value="{{product.name}}" required
+                           placeholder="e.g., iPhone 15 Pro Max"
+                           style="width: 100%; padding: 0.875rem 1rem; border: 1.5px solid #e2e8f0; border-radius: 10px; font-size: 0.9375rem; transition: all 0.3s;"
+                           onfocus="this.style.borderColor='#3b82f6'; this.style.boxShadow='0 0 0 3px rgba(59,130,246,0.1)'"
+                           onblur="this.style.borderColor='#e2e8f0'; this.style.boxShadow='none'" />
+                </div>
+
+                <div style="margin-bottom: 1.75rem;">
+                    <label for="description" style="display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem; font-size: 0.9375rem;">
+                        Description <span style="color: #ef4444;">*</span>
+                    </label>
+                    <textarea name="description" id="description" required rows="4"
+                              placeholder="Detailed product description including features and specifications"
+                              style="width: 100%; padding: 0.875rem 1rem; border: 1.5px solid #e2e8f0; border-radius: 10px; font-size: 0.9375rem; resize: vertical; font-family: inherit; transition: all 0.3s;"
+                              onfocus="this.style.borderColor='#3b82f6'; this.style.boxShadow='0 0 0 3px rgba(59,130,246,0.1)'"
+                              onblur="this.style.borderColor='#e2e8f0'; this.style.boxShadow='none'">{{product.description}}</textarea>
+                </div>
+
+                <div style="margin-bottom: 1.75rem;">
+                    <label for="price" style="display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem; font-size: 0.9375rem;">
+                        Price (€) <span style="color: #ef4444;">*</span>
+                    </label>
+                    <div style="position: relative;">
+                        <span style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #64748b; font-weight: 600;">€</span>
+                        <input type="number" name="price" id="price" min="0" step="0.01" value="{{product.price}}" required
+                               placeholder="0.00"
+                               style="width: 100%; padding: 0.875rem 1rem 0.875rem 2.5rem; border: 1.5px solid #e2e8f0; border-radius: 10px; font-size: 0.9375rem; transition: all 0.3s;"
+                               onfocus="this.style.borderColor='#3b82f6'; this.style.boxShadow='0 0 0 3px rgba(59,130,246,0.1)'"
+                               onblur="this.style.borderColor='#e2e8f0'; this.style.boxShadow='none'" />
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 2rem;">
+                    <label for="image" style="display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem; font-size: 0.9375rem;">
+                        Product Image <span style="color: #ef4444;">*</span>
+                    </label>
+                    
+                    {% if product.image %}
+                    <div style="margin-bottom: 1rem; padding: 1rem; background: #f8fafc; border-radius: 10px; border: 1px solid #e2e8f0;">
+                        <p style="font-size: 0.875rem; color: #64748b; margin-bottom: 0.75rem;">Current Image:</p>
+                        <img src="{{ product.image.url }}" alt="Current product" 
+                             style="max-width: 200px; height: auto; border-radius: 10px; border: 2px solid #e2e8f0;" />
+                    </div>
+                    {% endif %}
+
+                    <div style="position: relative; border: 2px dashed #cbd5e1; border-radius: 10px; padding: 2rem; text-align: center; background: #f8fafc; transition: all 0.3s;"
+                         onmouseover="this.style.borderColor='#3b82f6'; this.style.background='#eff6ff'"
+                         onmouseout="this.style.borderColor='#cbd5e1'; this.style.background='#f8fafc'">
+                        <i class='bx bx-cloud-upload' style="font-size: 3rem; color: #94a3b8; margin-bottom: 0.5rem;"></i>
+                        <p style="color: #64748b; margin-bottom: 0.5rem; font-weight: 500;">Choose a file or drag it here</p>
+                        <p style="color: #94a3b8; font-size: 0.875rem;">PNG, JPG or WEBP (max. 5MB)</p>
+                        <input type="file" name="image" id="image" {% if not product %}required{% endif %} accept="image/*"
+                               style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;" />
+                    </div>
+                </div>
+
+                <input type="hidden" name="product_id" value="{{ product.id }}">
+                
+                <div style="display: flex; gap: 1rem;">
+                    <button type="submit"
+                            style="flex: 1; padding: 1rem; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; border: none; border-radius: 10px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);"
+                            onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(59, 130, 246, 0.4)'"
+                            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(59, 130, 246, 0.3)'">
+                        {% if product %}
+                            <i class='bx bx-save' style="margin-right: 0.5rem;"></i>Update Product
+                        {% else %}
+                            <i class='bx bx-plus' style="margin-right: 0.5rem;"></i>Add Product
+                        {% endif %}
+                    </button>
+                    
+                    <a href="{% url 'admin_products' %}" style="text-decoration: none;">
+                        <button type="button"
+                                style="padding: 1rem 2rem; background: white; color: #64748b; border: 1.5px solid #e2e8f0; border-radius: 10px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: all 0.3s;"
+                                onmouseover="this.style.background='#f8fafc'; this.style.borderColor='#cbd5e1'"
+                                onmouseout="this.style.background='white'; this.style.borderColor='#e2e8f0'">
+                            Cancel
+                        </button>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
